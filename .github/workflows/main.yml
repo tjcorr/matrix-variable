@@ -7,6 +7,7 @@ jobs:
   list-files:
     outputs: 
       bicep-files: ${{ steps.list-files.outputs.files }}
+      files2: ${steps.list-files.outputs.files2 }}
     runs-on: ubuntu-latest
     steps:
       - name: list-files
@@ -16,14 +17,18 @@ jobs:
           touch files/file1
           touch files/file2
           touch files/file3
+          echo $(ls files | jq -R -s -c 'split("\n")[:-1]')
           echo files=$(ls files | jq -R -s -c 'split("\n")[:-1]') >> GITHUB_OUTPUT
+          echo file2s=[1,2,3] >> GITHUB_OUTPUT
 
   output:
     needs: [list-files]
     runs-on: ubuntu-latest
     steps:
       - name: test
-        run: echo ${{needs.list-files.outputs.bicep-files }}
+        run: |
+          echo ${{needs.list-files.outputs.bicep-files }}
+          echo ${{needs.list-files.outputs.files2 }}
 
 
   test_matrix:
