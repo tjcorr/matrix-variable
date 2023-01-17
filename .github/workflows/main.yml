@@ -1,7 +1,7 @@
 name: Matrix Jobs
 
 on:
-  workflow_dispatch:
+  push:
 
 jobs:
   list-files:
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        run: echo ${{ fromJson(needs.list-files.outputs.bicep-files) }}
+        run: echo ${{needs.list-files.outputs.bicep-files }}
 
 
   test_matrix:
