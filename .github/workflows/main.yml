@@ -26,9 +26,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
+        env: 
+          FILES: ${{ needs.list-files.outputs.files2 }}
+          BICEP: ${{ needs.list-files.outputs.bicep-files }}
         run: |
-          echo ${{ needs.list-files.outputs.bicep-files }}
-          echo ${{ needs.list-files.outputs.files2 }}
+          echo $BICEP
+          echo $FILES
 
 
   test_matrix:
