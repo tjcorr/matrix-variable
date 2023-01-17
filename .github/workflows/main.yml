@@ -5,21 +5,26 @@ on:
 
 jobs:
   list-files:
-    output: 
+    outputs: 
       bicep-files: steps.list-files.outputs.files
     runs-on: ubuntu-latest
     steps:
       - name: list-files
         id: list-files
-        run: echo "files=[file1, file2]" >> GITHUB_OUTPUTS
+        run: |
+          mkdir files
+          touch files/file1
+          touch files/file2
+          touch files/file3
+          echo $(ls files | jq -R -s -c 'split("\n")[:-1]') >> GITHUB_OUTPUT
+
 
   test_matrix:
     needs: [list-files]
     strategy:
       matrix:
-        file: needs.list-files.outputs.bicep-files
+        file: ${{ fromJson(needs.list-files.outputs.bicep-files) }}
     runs-on: ubuntu-latest
     steps:
       - name: test
         run: echo running on ${{ matrix.file }} 
-
