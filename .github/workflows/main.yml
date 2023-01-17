@@ -16,7 +16,14 @@ jobs:
           touch files/file1
           touch files/file2
           touch files/file3
-          echo $(ls files | jq -R -s -c 'split("\n")[:-1]') >> GITHUB_OUTPUT
+          echo files=$(ls files | jq -R -s -c 'split("\n")[:-1]') >> GITHUB_OUTPUT
+
+  output:
+    needs: [list-files]
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: echo ${{ fromJson(needs.list-files.outputs.bicep-files) }}
 
 
   test_matrix:
