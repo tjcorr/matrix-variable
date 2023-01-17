@@ -1,4 +1,4 @@
-name: Matrix Jobs
+name: Matrix Jobs from Variable
 
 on:
   push:
@@ -7,7 +7,6 @@ jobs:
   list-files:
     outputs: 
       bicep-files: ${{ steps.list-files.outputs.files }}
-      files2: ${{ steps.list-files.outputs.files2 }}
     runs-on: ubuntu-latest
     steps:
       - name: list-files
@@ -17,23 +16,7 @@ jobs:
           touch files/file1
           touch files/file2
           touch files/file3
-          echo $(ls files | jq -R -s -c 'split("\n")[:-1]')
           echo files=$(ls files | jq -R -s -c 'split("\n")[:-1]') >> $GITHUB_OUTPUT
-          echo files2=[1,2,3] >> $GITHUB_OUTPUT
-
-  output:
-    needs: [list-files]
-    runs-on: ubuntu-latest
-    steps:
-      - name: test
-        env: 
-          FILES: ${{ needs.list-files.outputs.files2 }}
-          BICEP: ${{ needs.list-files.outputs.bicep-files }}
-        run: |
-          echo $BICEP
-          echo $FILES
-          echo ${{ needs.list-files.outputs.bicep-files }}
-
 
   test_matrix:
     needs: [list-files]
