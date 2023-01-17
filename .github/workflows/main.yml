@@ -1,0 +1,25 @@
+name: Matrix Jobs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  list-files:
+    output: 
+      bicep-files: steps.list-files.outputs.files
+    runs-on: ubuntu-latest
+    steps:
+      - name: list-files
+        id: list-files
+        run: echo "files=[file1, file2]" >> GITHUB_OUTPUTS
+
+  test_matrix:
+    needs: [list-files]
+    strategy:
+      matrix:
+        file: needs.list-files.outputs.bicep-files
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: echo running on ${{ matrix.file }} 
+
