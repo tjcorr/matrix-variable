@@ -7,7 +7,7 @@ jobs:
   list-files:
     outputs: 
       bicep-files: ${{ steps.list-files.outputs.files }}
-      files2: ${steps.list-files.outputs.files2 }}
+      files2: ${{ steps.list-files.outputs.files2 }}
     runs-on: ubuntu-latest
     steps:
       - name: list-files
@@ -27,8 +27,8 @@ jobs:
     steps:
       - name: test
         run: |
-          echo ${{needs.list-files.outputs.bicep-files }}
-          echo ${{needs.list-files.outputs.files2 }}
+          echo ${{ needs.list-files.outputs.bicep-files }}
+          echo ${{ needs.list-files.outputs.files2 }}
 
 
   test_matrix:
