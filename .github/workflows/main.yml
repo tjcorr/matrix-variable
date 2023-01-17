@@ -18,7 +18,7 @@ jobs:
           touch files/file2
           touch files/file3
           echo $(ls files | jq -R -s -c 'split("\n")[:-1]')
-          echo files=\'$(ls files | jq -R -s -c 'split("\n")[:-1]')\' >> $GITHUB_OUTPUT
+          echo files=$(ls files | jq -R -s -c 'split("\n")[:-1]') >> $GITHUB_OUTPUT
           echo files2=[1,2,3] >> $GITHUB_OUTPUT
 
   output:
@@ -32,6 +32,7 @@ jobs:
         run: |
           echo $BICEP
           echo $FILES
+          echo ${{ needs.list-files.outputs.bicep-files }}
 
 
   test_matrix:
