@@ -6,7 +6,7 @@ on:
 jobs:
   list-files:
     outputs: 
-      bicep-files: steps.list-files.outputs.files
+      bicep-files: ${{ steps.list-files.outputs.files }}
     runs-on: ubuntu-latest
     steps:
       - name: list-files
